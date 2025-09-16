@@ -69,26 +69,29 @@ class Enemy extends Entity {
     let w = 2;
     let h = 2;
 
-    
     const side = Math.floor(Math.random() * 4);
     let positionX, positionY, dx, dy;
 
-    if (side === 0) { 
+    if (side === 0) {
       positionX = Math.random() * (100 - w);
       positionY = 100 - h;
-      dx = 0; dy = -0.5;
-    } else if (side === 1) { 
+      dx = 0;
+      dy = -0.5;
+    } else if (side === 1) {
       positionX = Math.random() * (100 - w);
       positionY = 0;
-      dx = 0; dy = 0.5;
-    } else if (side === 2) { 
+      dx = 0;
+      dy = 0.5;
+    } else if (side === 2) {
       positionX = 0;
       positionY = Math.random() * (100 - h);
-      dx = 0.5; dy = 0;
-    } else { 
+      dx = 0.5;
+      dy = 0;
+    } else {
       positionX = 100 - w;
       positionY = Math.random() * (100 - h);
-      dx = -0.5; dy = 0;
+      dx = -0.5;
+      dy = 0;
     }
 
     super(positionX, positionY, w, h, "Enemy");
@@ -104,12 +107,12 @@ class Enemy extends Entity {
 // --- Balas ---
 
 class Bullet extends Entity {
-  constructor() {
-    super(positionX, positionX, 1, 1, "Bullet"); // Ajusta el tamaño de la bala
+  constructor(positionX, positionY, width, height, mouseX, mouseY) {
+    super(positionX, positionY, width, height, "Bullet");
 
     // Calcular velocidad hacia el objetivo
     const speed = 1.5; // Velocidad de la bala (vh/intervalo)
-    const angle = Math.atan2(direccionY - positionX, direccionX - positionX);
+    const angle = Math.atan2(mouseY - positionY, mouseX - positionX);
 
     this.dx = Math.cos(angle) * speed;
     this.dy = Math.sin(angle) * speed;
@@ -124,6 +127,7 @@ class Bullet extends Entity {
 const enemiesArr = [];
 const bulletsArr = [];
 const player = new Player();
+let mouse = { x: 0, y: 0 };
 let municion = 10;
 // Spawn enemigos
 setInterval(() => {
@@ -136,15 +140,15 @@ setInterval(() => {
     enemy.update();
 
     // COLISION
-    // if (enemy.collidesWith(player)) {
-    //   alert("¡Colisión! Juego terminado");
-    //   location.reload(); // Reinicia el juego
-    // }
+    // // if (enemy.collidesWith(player)) {
+    // //   alert("¡Colisión! Juego terminado");
+    // //   location.reload(); // Reinicia el juego
+    // // }
 
     // Eliminar enemigos fuera del tablero
     if (
       enemy.positionX < 0 ||
-      (enemy.positionX + enemy.width) > 100 ||
+      enemy.positionX + enemy.width > 100 ||
       enemy.positionY < 0 ||
       enemy.positionY + enemy.height > 100
     ) {
@@ -154,6 +158,33 @@ setInterval(() => {
   });
 }, 50);
 
+// Actualizar balas
+setInterval(() => {
+bulletsArr.forEach((bullet, index) => {
+  bullet.update();
+
+  // Colisión con enemigos
+  enemiesArr.forEach((enemy, eIndex) => {
+    if (bullet.collidesWith(enemy)) {
+      enemy.elm.remove(); //Elimina el elemento
+      enemiesArr.splice(eIndex, 1); //Borra el elemento del array
+      bullet.elm.remove(); //Elimina el elemento de la bala
+      bulletsArr.splice(index, 1); //Elimina la bala del array de balas
+    }
+  });
+
+  // Eliminar balas fuera del tablero
+  if (
+    bullet.positionX < 0 ||
+    bullet.positionX > 100 ||
+    bullet.positionY < 0 ||
+    bullet.positionY > 100
+  ) {
+    bullet.elm.remove();
+    bulletsArr.splice(index, 1);
+  }
+});
+}, 50);
 // --- Controles ---
 document.addEventListener("keydown", (event) => {
   if (event.code === "ArrowLeft") player.moveLeft();
@@ -169,17 +200,22 @@ board.addEventListener("mousemove", (e) => {
 board.addEventListener("click", () => {
   console.log(municion);
   const municionTxt = document.getElementById("municion");
-  if(municion > 0){
+  if (municion > 0) {
+    const bullet = new Bullet(
+      player.positionX + player.width / 2,
+      player.positionY + player.height / 2,
+      1,
+      1,
+      mouse.x,
+      mouse.y,
+      "Bullet"
+    );
 
-  //   const bullet = new Bullet(
-  //   player.positionX + player.width / 2,
-  //   player.positionY + player.height / 2,
-  //   mouse.x,
-  //   mouse.y
-  // );
-  municion--;
-  municionTxt.textContent = "Munición: " + municion;
-  
-  //bulletsArr.push(bullet);
+    municion--;
+    municionTxt.textContent = "Munición: " + municion;
+
+    bulletsArr.push(bullet);
+  } else {
+    console.log("NO QUEDA MUNICION");
   }
 });

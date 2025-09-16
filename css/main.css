@@ -31,3 +31,11 @@ body{
   border-radius: 8px;
   pointer-events: none; 
 }
+.Bullet{
+  position: absolute;
+  background: yellow;             /* color llamativo */
+  border-radius: 50%;             /* la hace redonda, como un proyectil */
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.8); /* efecto de brillo */
+  height: 1vh;
+  width: 1vw;
+}
