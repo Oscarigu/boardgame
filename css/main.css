@@ -1,0 +1,33 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+#board{
+    background-color: bisque;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+.Player{
+    height: 5vh;
+    width: 2.5vw;
+    background-color: blue;
+    position: absolute;
+}
+.Enemy{
+    height: 2vh;
+    width: 2vw;
+    background-color: red;
+    position: absolute;
+}
+#municion{
+  position: absolute;
+  top: 1vh;
+  left: 1vw;
+  background: rgba(0, 0, 0, 0.5); 
+  color: white;
+  font-size: 2vh;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  pointer-events: none; 
+}
