@@ -33,9 +33,31 @@ body{
 }
 .Bullet{
   position: absolute;
-  background: yellow;             /* color llamativo */
-  border-radius: 50%;             /* la hace redonda, como un proyectil */
-  box-shadow: 0 0 5px rgba(255, 255, 0, 0.8); /* efecto de brillo */
+  background: yellow;             
+  border-radius: 50%;             
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.8); 
   height: 1vh;
   width: 1vw;
+}
+
+#enemies-eliminated{
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+  background: rgba(0, 0, 0, 0.5); 
+  color: white;
+  font-size: 2vh;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  pointer-events: none; 
+}
+.game-over{
+position: absolute;
+background-color: rgba(0, 0, 0, 0.5);
+width: 100%;
+height: 100%;
+display: flex;
+text-align: center;
+align-items: center;
+justify-content: center;
 }

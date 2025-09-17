@@ -1,6 +1,7 @@
 // --- Constantes globales ---
 const board = document.getElementById("board");
-
+const enemigoseliminados = document.getElementById("enemies-eliminated");
+const municionTxt = document.getElementById("municion");
 // --- Clase base para Player positionY Enemy ---
 class Entity {
   constructor(positionX, positionY, w, h, className) {
@@ -47,19 +48,31 @@ class Entity {
 class Player extends Entity {
   constructor() {
     super(0, 0, 3, 5, "Player");
+    this.speed = 1.5;
   }
 
-  moveLeft() {
-    if (this.positionX > 0) this.move(-2, 0);
-  }
-  moveRight() {
-    if (this.positionX + this.width < 100) this.move(2, 0);
-  }
-  moveUp() {
-    if (this.positionY + this.height < 100) this.move(0, 2);
-  }
-  moveDown() {
-    if (this.positionY > 0) this.move(0, -2);
+  update(keys) {
+    let dx = 0,
+      dy = 0;
+
+    if (keys["ArrowLeft"] && this.positionX > 0) {
+      dx -= this.speed;
+    }
+    if (keys["ArrowRight"] && this.positionX + this.width < 100) {
+      dx += this.speed;
+    }
+    if (keys["ArrowUp"] && this.positionY + this.height < 100) {
+      dy += this.speed;
+    }
+    if (keys["ArrowDown"] && this.positionY > 0) {
+      dy -= this.speed;
+    }
+    if (dx !== 0 && dy !== 0) {
+      dx *= Math.SQRT1_2;
+      dy *= Math.SQRT1_2;
+    }
+
+    this.move(dx, dy);
   }
 }
 
@@ -127,23 +140,36 @@ class Bullet extends Entity {
 const enemiesArr = [];
 const bulletsArr = [];
 const player = new Player();
+const keys = {};
 let mouse = { x: 0, y: 0 };
 let municion = 10;
+let puntos = 0;
 // Spawn enemigos
-setInterval(() => {
+let enemySpawnLoop = setInterval(() => {
   enemiesArr.push(new Enemy());
 }, 500);
 
 // Loop principal
-setInterval(() => {
+let gameLoop = setInterval(() => {
   enemiesArr.forEach((enemy, index) => {
     enemy.update();
 
-    // COLISION
-    // // if (enemy.collidesWith(player)) {
-    // //   alert("¡Colisión! Juego terminado");
-    // //   location.reload(); // Reinicia el juego
-    // // }
+    //COLISION;
+      if (enemy.collidesWith(player)) {
+        clearInterval(gameLoop);
+        clearInterval(enemySpawnLoop);
+        clearInterval(bulletLoop);
+        console.log("JUEGO TERMINADO");
+          const gameOverMsg = document.createElement("div");
+          gameOverMsg.innerText = "¡Colisión! Juego terminado";
+          gameOverMsg.className = "game-over";
+          board.appendChild(gameOverMsg);
+
+        // setTimeout(() => {
+        //   location.reload();
+        // }, 5000); // espera 5 segundos antes de reiniciar
+      }
+    
 
     // Eliminar enemigos fuera del tablero
     if (
@@ -156,50 +182,50 @@ setInterval(() => {
       enemiesArr.splice(index, 1);
     }
   });
+  player.update(keys);
 }, 50);
 
 // Actualizar balas
-setInterval(() => {
-bulletsArr.forEach((bullet, index) => {
-  bullet.update();
+let bulletLoop = setInterval(() => {
+  bulletsArr.forEach((bullet, index) => {
+    bullet.update();
 
-  // Colisión con enemigos
-  enemiesArr.forEach((enemy, eIndex) => {
-    if (bullet.collidesWith(enemy)) {
-      enemy.elm.remove(); //Elimina el elemento
-      enemiesArr.splice(eIndex, 1); //Borra el elemento del array
-      bullet.elm.remove(); //Elimina el elemento de la bala
-      bulletsArr.splice(index, 1); //Elimina la bala del array de balas
+    // Colisión con enemigos
+    enemiesArr.forEach((enemy, eIndex) => {
+      if (bullet.collidesWith(enemy)) {
+        enemy.elm.remove(); //Elimina el elemento
+        enemiesArr.splice(eIndex, 1); //Borra el elemento del array
+        bullet.elm.remove(); //Elimina el elemento de la bala
+        bulletsArr.splice(index, 1); //Elimina la bala del array de balas
+        puntos++;
+        enemigoseliminados.textContent = "Kills: " + puntos;
+      }
+    });
+
+    // Eliminar balas fuera del tablero
+    if (
+      bullet.positionX < 0 ||
+      bullet.positionX > 100 ||
+      bullet.positionY < 0 ||
+      bullet.positionY > 100
+    ) {
+      bullet.elm.remove();
+      bulletsArr.splice(index, 1);
     }
   });
-
-  // Eliminar balas fuera del tablero
-  if (
-    bullet.positionX < 0 ||
-    bullet.positionX > 100 ||
-    bullet.positionY < 0 ||
-    bullet.positionY > 100
-  ) {
-    bullet.elm.remove();
-    bulletsArr.splice(index, 1);
-  }
-});
 }, 50);
 // --- Controles ---
-document.addEventListener("keydown", (event) => {
-  if (event.code === "ArrowLeft") player.moveLeft();
-  if (event.code === "ArrowRight") player.moveRight();
-  if (event.code === "ArrowUp") player.moveUp();
-  if (event.code === "ArrowDown") player.moveDown();
-});
+
+//Contiene la informacion de mi raton sobre el board
 board.addEventListener("mousemove", (e) => {
   const rect = board.getBoundingClientRect();
   mouse.x = ((e.clientX - rect.left) / rect.width) * 100;
   mouse.y = 100 - ((e.clientY - rect.top) / rect.height) * 100; // invertido por bottom
 });
+//Posicion especifica de mi raton al hacer click en el board
+//Y dispara la bala
 board.addEventListener("click", () => {
-  console.log(municion);
-  const municionTxt = document.getElementById("municion");
+
   if (municion > 0) {
     const bullet = new Bullet(
       player.positionX + player.width / 2,
@@ -218,4 +244,19 @@ board.addEventListener("click", () => {
   } else {
     console.log("NO QUEDA MUNICION");
   }
+});
+//Contiene la informacion para recargar
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    municion = 10;
+    municionTxt.textContent = "Munición: " + municion;
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  keys[event.code] = true;
+});
+
+document.addEventListener("keyup", (event) => {
+  keys[event.code] = false;
 });
