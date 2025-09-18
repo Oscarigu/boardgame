@@ -197,6 +197,20 @@ let bulletLoop = setInterval(() => {
         puntos++;
         enemigoseliminados.textContent = "Kills: " + puntos;
       }
+
+      if (puntos >= 15) {
+        clearInterval(gameLoop);
+        clearInterval(enemySpawnLoop);
+        clearInterval(bulletLoop);
+
+        // Mostrar pantalla de victoria
+        document.getElementById("victory").style.visibility = "visible";
+
+        // Escuchar click en botón de reinicio
+        document.getElementById("restartVictoryBtn").addEventListener("click", () => {
+          location.reload();
+        });
+      }
     });
 
     // Eliminar balas fuera del tablero
