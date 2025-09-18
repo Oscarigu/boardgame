@@ -159,11 +159,8 @@ let gameLoop = setInterval(() => {
         clearInterval(gameLoop);
         clearInterval(enemySpawnLoop);
         clearInterval(bulletLoop);
-        console.log("JUEGO TERMINADO");
-          const gameOverMsg = document.createElement("div");
-          gameOverMsg.innerText = "¡Colisión! Juego terminado";
-          gameOverMsg.className = "game-over";
-          board.appendChild(gameOverMsg);
+        document.getElementById("gameOver").style.visibility = "visible";
+
 
         // setTimeout(() => {
         //   location.reload();
@@ -259,4 +256,8 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keyup", (event) => {
   keys[event.code] = false;
+});
+
+document.getElementById("restartBtn").addEventListener("click", () => {   
+  location.reload(); // Reinicia la partida
 });

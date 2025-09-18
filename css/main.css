@@ -61,3 +61,32 @@ text-align: center;
 align-items: center;
 justify-content: center;
 }
+
+#gameOver {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 5vh;
+  font-family: sans-serif;
+  visibility: hidden;
+  z-index: 999;
+}
+
+#gameOver button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 2vh;
+  border: none;
+  border-radius: 8px;
+  background: #ff4444;
+  color: white;
+  cursor: pointer;
+}
