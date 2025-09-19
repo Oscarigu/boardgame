@@ -7,8 +7,11 @@ Instrucciones:
 Desplazamiento con las teclas. 
 
 🡡 ---> El jugador se desplazara hacia arriba
+
 🡫 ---> El jugador se desplazara hacia abajo
+
 🡨 ---> El jugador se desplazara hacia la izquierda
+
 🡪 ---> El jugador se desplazara hacia la derecha
 
 Para el movimiento en diagonal presione dos flechas que generen la direccion a la cual quiere desplazarse,
