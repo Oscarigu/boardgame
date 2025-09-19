@@ -161,10 +161,6 @@ let gameLoop = setInterval(() => {
         clearInterval(bulletLoop);
         document.getElementById("gameOver").style.visibility = "visible";
 
-
-        // setTimeout(() => {
-        //   location.reload();
-        // }, 5000); // espera 5 segundos antes de reiniciar
       }
     
 
