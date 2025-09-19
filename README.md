@@ -17,6 +17,7 @@ Desplazamiento con las teclas.
 🡪 ---> El jugador se desplazara hacia la derecha
 
 Para el movimiento en diagonal presione dos flechas que generen la direccion a la cual quiere desplazarse,
+
 ej: 🡡 + 🡪 ---> 🡭
 
 Para disparar presione el click izquierdo del raton.
