@@ -1,4 +1,5 @@
 <h2>Descripcion:</h2>
+
 Juego en 2D donde tendras que esquivar oleadas de enemigos, movimiento 8 direcciones y posibilidad de eliminar a los enemigos disparandoles.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/97acb83b-ac62-490a-8937-986e7cef259e" />
