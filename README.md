@@ -1,9 +1,10 @@
-Descripcion:
+<h2>Descripcion:</h2>
 Juego en 2D donde tendras que esquivar oleadas de enemigos, movimiento 8 direcciones y posibilidad de eliminar a los enemigos disparandoles.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/97acb83b-ac62-490a-8937-986e7cef259e" />
 
-Instrucciones:
+<h2>Instrucciones:</h2>
+
 Desplazamiento con las teclas. 
 
 🡡 ---> El jugador se desplazara hacia arriba
@@ -23,5 +24,5 @@ Para recargar presione la tecla Espacio (Spacebar).
 
 <img width="1086" height="623" alt="image" src="https://github.com/user-attachments/assets/f95c9829-ed94-49c4-bfc9-d4927fdbf3d1" />
 
-DEMO:
+<h2>DEMO:</h2>
 https://oscarigu.github.io/boardgame/
